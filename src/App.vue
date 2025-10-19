@@ -1,9 +1,11 @@
 <script setup>
-import productCard from "./components/productCard.vue";
+import ProductCard from './components/ProductCard.vue';
+
+
 </script>
 
 <template>
-  <productCard />
+  <ProductCard />
 </template>
 
 <style scoped></style>
