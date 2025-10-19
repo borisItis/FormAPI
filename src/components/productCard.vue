@@ -10,14 +10,9 @@
         autocomplete="on"
       />
       <div class="products__cards">
-<<<<<<< HEAD
         <p v-if="searchValue.length <= 3" class="no-results"></p>
-        <p v-else-if="isLoading" class="loading">
-          ⏳ Загрузка товаров...
-        </p>
-        <p v-else-if="errorMessage" class="error">
-          ⚠️ {{ errorMessage }}
-        </p>
+        <p v-else-if="isLoading" class="loading">Загрузка товаров...</p>
+        <p v-else-if="errorMessage" class="error">{{ errorMessage }}</p>
         <template v-else>
           <div
             v-for="product in products"
@@ -40,7 +35,6 @@
             Опппс... По вашему запросу ничего не найдено
           </p>
         </template>
-=======
         <div
           v-for="product in products"
           :key="product.id"
@@ -62,7 +56,6 @@
         <p v-if="!products.length && searchValue.length > 3" class="no-results">
           Опппс... По вашему запросу ничего не найдено
         </p>
->>>>>>> fecec002728ecb1ae8ad07b451bdbf3d20011590
       </div>
     </div>
   </section>
@@ -73,52 +66,35 @@ import { ref, watch } from "vue";
 
 const searchValue = ref("");
 const products = ref([]);
-<<<<<<< HEAD
 const isLoading = ref(false);
 const errorMessage = ref("");
-let timeoutId = null;
 
 watch(searchValue, (newValue) => {
-  clearTimeout(timeoutId);
-
   if (newValue.length <= 3) {
     products.value = [];
     errorMessage.value = "";
     return;
   }
 
-  timeoutId = setTimeout(() => {
-    fetchProducts();
-  }, 500);
+  const timer = setTimeout(fetchProducts, 500);
+
+  return () => clearTimeout(timer);
 });
 
 async function fetchProducts() {
   isLoading.value = true;
   errorMessage.value = "";
   products.value = [];
-=======
-
-async function fetchProducts() {
-  if (searchValue.value.length <= 3) {
-    products.value = [];
-    return;
-  }
->>>>>>> fecec002728ecb1ae8ad07b451bdbf3d20011590
 
   try {
     const res = await fetch(
-      `https://dummyjson.com/products/search?q=${encodeURIComponent(
-        searchValue.value
-      )}`
+      `https://dummyjson.com/products/search?q=${encodeURIComponent(searchValue.value)}`
     );
-<<<<<<< HEAD
 
     if (!res.ok) {
-      throw new Error(`Ошибка сервера: ${res.status}`);
+      throw new Error(`Ошибка: ${res.status}`);
     }
 
-=======
->>>>>>> fecec002728ecb1ae8ad07b451bdbf3d20011590
     const data = await res.json();
 
     products.value = data.products.map((p) => ({
@@ -128,32 +104,20 @@ async function fetchProducts() {
       price: p.price,
       image: p.thumbnail,
     }));
-<<<<<<< HEAD
+
     if (!products.value.length) {
-      errorMessage.value = "";
+      errorMessage.value = "По вашему запросу ничего не найдено.";
     }
   } catch (error) {
-    errorMessage.value = "Ошибка при зарузке данных, Попробуйте позже.";
+    errorMessage.value = "Ошибка при загрузке данных. Попробуйте позже.";
     console.error("Ошибка:", error);
   } finally {
     isLoading.value = false;
-=======
-  } catch (error) {
-    console.log("Ошибка при загрузке данных:", error);
->>>>>>> fecec002728ecb1ae8ad07b451bdbf3d20011590
   }
 }
 
-watch(searchValue, () => {
-  fetchProducts();
-});
-
 function buyProduct(product) {
-<<<<<<< HEAD
-  alert(`Спасибо за покупку "${product.title}", скоро с вами свяжемся!`);
-=======
-  alert(`Cпасибо за покупку, скоро мы с вами свяжемся!`);
->>>>>>> fecec002728ecb1ae8ad07b451bdbf3d20011590
+  alert(`Спасибо за покупку "${product.title}". Скоро с вами свяжемся!`);
 }
 </script>
 
